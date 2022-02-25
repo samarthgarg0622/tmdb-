@@ -33,5 +33,7 @@ data class MovieDetails(
     val title: String,
     val overview: String,
     val original_language: String,
+    val vote_average: Double,
+    val poster_path: String,
 
     )
