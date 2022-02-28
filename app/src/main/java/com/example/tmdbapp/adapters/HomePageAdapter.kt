@@ -13,7 +13,10 @@ import com.example.tmdbapp.models.MovieDetails
 import com.example.tmdbapp.models.MoviesList
 import kotlinx.android.synthetic.main.item_layout.view.*
 
-class HomePageAdapter(val moviesList: MoviesList):RecyclerView.Adapter<HomePageAdapter.HomePageViewHolder>() {
+class HomePageAdapter(
+    val moviesList: MoviesList,
+    private val onPress:(MovieDetails)->Unit
+    ):RecyclerView.Adapter<HomePageAdapter.HomePageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomePageViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout,parent,false)
@@ -27,7 +30,7 @@ class HomePageAdapter(val moviesList: MoviesList):RecyclerView.Adapter<HomePageA
     override fun onBindViewHolder(holder: HomePageViewHolder, position: Int) {
         when(holder){
             is HomePageViewHolder->{
-                holder.bind(moviesList.results.get(position))
+                holder.bind(moviesList.results.get(position),onPress)
             }
         }
     }
@@ -43,7 +46,7 @@ class HomePageAdapter(val moviesList: MoviesList):RecyclerView.Adapter<HomePageA
         val movieRating = itemview.movieRating
         val movieImage = itemview.movieImage
 
-        fun bind(movieDetails: MovieDetails){
+        fun bind(movieDetails: MovieDetails,onPress:(MovieDetails)->Unit){
             movieTitle.setText(movieDetails.title)
             movieRating.setText(movieDetails.vote_average.toString())
 
@@ -55,7 +58,11 @@ class HomePageAdapter(val moviesList: MoviesList):RecyclerView.Adapter<HomePageA
                 .applyDefaultRequestOptions(requestOptions)
                 .load("https://image.tmdb.org/t/p/original${movieDetails.poster_path}")
                 .into(movieImage)
+            itemView.setOnClickListener {
+                onPress(movieDetails)
+            }
         }
+
 
     }
 

@@ -15,11 +15,14 @@ import com.example.tmdbapp.Repository.MovieRepository
 import com.example.tmdbapp.adapters.HomePageAdapter
 import com.example.tmdbapp.api.MovieService
 import com.example.tmdbapp.api.RetrofitHelper
+import com.example.tmdbapp.models.MovieDetails
 import com.example.tmdbapp.viewModel.MainViewModel
 import com.example.tmdbapp.viewModel.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home_page.*
 
-class HomePage : Fragment() {
+class HomePage (
+    private val onPress:(MovieDetails)->Unit
+        ): Fragment() {
 
     lateinit var adapter: HomePageAdapter
     private lateinit var mainViewModel: MainViewModel
@@ -44,7 +47,7 @@ class HomePage : Fragment() {
         mainViewModel.movies.observe(viewLifecycleOwner, Observer {
             Log.d("apiCall",it.toString())
 
-            adapter = HomePageAdapter(it)
+            adapter = HomePageAdapter(it, onPress)
             moviesList.adapter = adapter
             moviesList.layoutManager = GridLayoutManager(activity,3)
 
