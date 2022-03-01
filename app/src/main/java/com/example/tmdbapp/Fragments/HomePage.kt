@@ -15,6 +15,7 @@ import com.example.tmdbapp.Repository.MovieRepository
 import com.example.tmdbapp.adapters.HomePageAdapter
 import com.example.tmdbapp.api.MovieService
 import com.example.tmdbapp.api.RetrofitHelper
+import com.example.tmdbapp.favourites.FavouritesDatabase
 import com.example.tmdbapp.models.MovieDetails
 import com.example.tmdbapp.viewModel.MainViewModel
 import com.example.tmdbapp.viewModel.MainViewModelFactory
@@ -22,11 +23,13 @@ import kotlinx.android.synthetic.main.fragment_home_page.*
 
 class HomePage (
     private val onPress:(MovieDetails)->Unit
+
         ): Fragment() {
 
     lateinit var adapter: HomePageAdapter
     private lateinit var mainViewModel: MainViewModel
     val movieService = RetrofitHelper.getInstance().create(MovieService::class.java)
+//    val database = FavouritesDatabase.getFavouritesDatabase(context)
     val repository = MovieRepository(movieService)
 
 

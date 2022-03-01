@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction().apply {
                     replace(R.id.fl,detailsPage)
                     commit()
+                    addToBackStack("homePageFragment")
 
                 }
             }

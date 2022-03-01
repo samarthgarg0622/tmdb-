@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.tmdbapp.api.MovieService
+import com.example.tmdbapp.favourites.FavouritesDatabase
 import com.example.tmdbapp.models.MovieDetails
 import com.example.tmdbapp.models.MoviesList
 import retrofit2.Call

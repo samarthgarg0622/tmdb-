@@ -1,5 +1,8 @@
 package com.example.tmdbapp.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 //data class MovieDetails(
 //    val adult: Boolean,
 //    val backdrop_path: String,
@@ -28,12 +31,17 @@ package com.example.tmdbapp.models
 //    val vote_count: Int
 //)
 
+@Entity(tableName = "favourites")
 data class MovieDetails(
+
+    @PrimaryKey
+    val id: Int,
     val adult: Boolean,
     val title: String,
     val overview: String,
     val original_language: String,
     val vote_average: Double,
     val poster_path: String,
+    val release_date: String,
 
     )
