@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -17,7 +15,6 @@ import com.example.tmdbapp.models.MovieDetails
 import kotlinx.android.synthetic.main.fragment_details_page.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 class DetailsPage(private val movieDetails: MovieDetails) : Fragment() {
     lateinit var database: FavouritesDatabase
@@ -59,6 +56,7 @@ class DetailsPage(private val movieDetails: MovieDetails) : Fragment() {
             .into(movie_backdrop)
 
 
+        checkFavourites()
         favourite_button.setOnClickListener {
             addedToFavourites = !addedToFavourites
             updatebutton()
@@ -66,8 +64,17 @@ class DetailsPage(private val movieDetails: MovieDetails) : Fragment() {
         }
     }
 
+    private fun checkFavourites(){
+        GlobalScope.launch {
+            if(database.favouritesDao().getFavourites(movieDetails.id).size!=0) {
+                addedToFavourites = true
+                updatebutton()
+            }
+
+        }
+    }
     private fun updatebutton() {
-        Toast.makeText(activity,addedToFavourites.toString(),Toast.LENGTH_SHORT).show()
+
         when(addedToFavourites) {
             true -> {
                 favourite_button.setImageResource(R.drawable.ic_baseline_favorite_24)
@@ -84,7 +91,7 @@ class DetailsPage(private val movieDetails: MovieDetails) : Fragment() {
                 favourite_button.setImageResource(R.drawable.ic_baseline_favorite_border_24)
                 GlobalScope.launch {
                     database.favouritesDao().removeFromFavourites(
-                        movieDetails.title
+                        movieDetails.id
                     )
                 }
             }
