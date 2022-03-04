@@ -11,8 +11,8 @@ interface FavouritesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addFavourite(movieDetails: MovieDetails)
 
-    @Query("SELECT * FROM favourites WHERE id=:movieId")
-    suspend fun getFavourites(movieId:Int) :List<MovieDetails>
+    @Query("Select Exists(Select * from favourites where id= :movieId )")
+    suspend fun getFavourites(movieId:Int): Boolean
 
     @Query("DELETE FROM favourites WHERE id=:movieId")
     suspend fun removeFromFavourites(movieId:Int)
