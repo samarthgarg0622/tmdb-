@@ -3,12 +3,16 @@ package com.example.tmdbapp.Repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.tmdbapp.api.MovieService
+import com.example.tmdbapp.favourites.FavouritesDao
 import com.example.tmdbapp.favourites.FavouritesDatabase
+import com.example.tmdbapp.models.MovieDetails
 import com.example.tmdbapp.models.MoviesList
+import javax.inject.Inject
 
-class MovieRepository(
+class MovieRepository
+@Inject constructor(
     private val movieService: MovieService,
-    val database: FavouritesDatabase
+    private val favouritesDao: FavouritesDao
 ) {
 
     private val movieLiveData = MutableLiveData<MoviesList>()
@@ -17,13 +21,17 @@ class MovieRepository(
 
     suspend fun getMovies(page: Int): LiveData<MoviesList> {
         val result = movieService.getMovies(page)
-
         if (result?.body() != null) {
             movieLiveData.postValue(result.body())
         }
-
-
-
         return movies
     }
+
+    suspend fun getFavourites(id: Int) = favouritesDao.getFavourites(id)
+
+    suspend fun addFavourite(movieDetails: MovieDetails)  = favouritesDao.addFavourite(movieDetails)
+
+    suspend fun removeFromFavourites(id: Int) = favouritesDao.removeFromFavourites(id)
+
+
 }
