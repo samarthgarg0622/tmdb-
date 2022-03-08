@@ -18,10 +18,10 @@ object DatabaseModule {
     @Provides
     fun provideFavouritesDatabase(@ApplicationContext context: Context): FavouritesDatabase =
         Room.databaseBuilder(
-                context,
-                FavouritesDatabase::class.java,
-                "favourites"
-            )
+            context,
+            FavouritesDatabase::class.java,
+            "favourites"
+        )
             .build()
 
     @Singleton

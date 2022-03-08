@@ -1,10 +1,11 @@
 package com.example.tmdbapp.adapters
 
-
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -20,18 +21,12 @@ class HomePageAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomePageViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
-        val viewHolder = HomePageViewHolder(view)
-//        view.setOnClickListener {
-//            listener.onArticleClicked(articles[viewholder.adapterPosition])
-//        }
-        return viewHolder
+        return HomePageViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: HomePageViewHolder, position: Int) {
         when (holder) {
-            is HomePageViewHolder -> {
-                holder.bind(moviesList.results.get(position), onPress)
-            }
+            is HomePageViewHolder -> holder.bind(moviesList.results.get(position), onPress)
         }
     }
 
@@ -40,15 +35,15 @@ class HomePageAdapter(
         return moviesList.results.size
     }
 
-    class HomePageViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
+    class HomePageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val movieTitle = itemview.movieTitle
-        val movieRating = itemview.movieRating
-        val movieImage = itemview.movieImage
+        val movieTitle: TextView = itemView.movieTitle
+        val movieRating: TextView = itemView.movieRating
+        val movieImage: ImageView = itemView.movieImage
 
         fun bind(movieDetails: MovieDetails, onPress: (MovieDetails) -> Unit) {
-            movieTitle.setText(movieDetails.title)
-            movieRating.setText(movieDetails.vote_average.toString())
+            movieTitle.text = movieDetails.title
+            movieRating.text = movieDetails.vote_average.toString()
 
             val requestOptions = RequestOptions()
                 .placeholder(R.drawable.ic_launcher_background)
@@ -62,8 +57,5 @@ class HomePageAdapter(
                 onPress(movieDetails)
             }
         }
-
-
     }
-
 }

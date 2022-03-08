@@ -1,6 +1,5 @@
 package com.example.tmdbapp.viewModel
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,11 +19,11 @@ class MainViewModel @Inject constructor(
     private val _favState = MutableLiveData<Boolean>()
     val favState: LiveData<Boolean> = _favState
 
+    var pageNumber: Int = 1
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getMovies(1)
+            repository.getMovies(pageNumber)
         }
-
     }
 
     val movies: LiveData<MoviesList>
@@ -41,7 +40,6 @@ class MainViewModel @Inject constructor(
             true ->
                 viewModelScope.launch {
                     repository.addFavourite(movieDetails)
-
                 }
 
             false ->
@@ -49,7 +47,6 @@ class MainViewModel @Inject constructor(
                     repository.removeFromFavourites(movieDetails.id)
                 }
         }
-
 
 //        return !addedToFavourites
     }

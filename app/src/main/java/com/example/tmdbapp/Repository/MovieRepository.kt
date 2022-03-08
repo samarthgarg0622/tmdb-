@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.tmdbapp.api.MovieService
 import com.example.tmdbapp.favourites.FavouritesDao
-import com.example.tmdbapp.favourites.FavouritesDatabase
 import com.example.tmdbapp.models.MovieDetails
 import com.example.tmdbapp.models.MoviesList
 import javax.inject.Inject
@@ -29,9 +28,7 @@ class MovieRepository
 
     suspend fun getFavourites(id: Int) = favouritesDao.getFavourites(id)
 
-    suspend fun addFavourite(movieDetails: MovieDetails)  = favouritesDao.addFavourite(movieDetails)
+    suspend fun addFavourite(movieDetails: MovieDetails) = favouritesDao.addFavourite(movieDetails)
 
     suspend fun removeFromFavourites(id: Int) = favouritesDao.removeFromFavourites(id)
-
-
 }
