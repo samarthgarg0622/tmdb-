@@ -1,6 +1,5 @@
 package com.example.tmdbapp.viewModel
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,20 +7,23 @@ import androidx.lifecycle.viewModelScope
 import com.example.tmdbapp.Repository.MovieRepository
 import com.example.tmdbapp.models.MovieDetails
 import com.example.tmdbapp.models.MoviesList
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
-    val repository: MovieRepository,
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val repository: MovieRepository,
 ) : ViewModel() {
     private val _favState = MutableLiveData<Boolean>()
     val favState: LiveData<Boolean> = _favState
 
+    var pageNumber: Int = 1
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getMovies(1)
+            repository.getMovies(pageNumber)
         }
-
     }
 
     val movies: LiveData<MoviesList>
@@ -29,7 +31,7 @@ class MainViewModel(
 
     fun checkFavourites(movieDetails: MovieDetails) {
         viewModelScope.launch {
-            _favState.postValue(repository.database.favouritesDao().getFavourites(movieDetails.id))
+            _favState.postValue(repository.getFavourites(movieDetails.id))
         }
     }
 
@@ -37,16 +39,14 @@ class MainViewModel(
         when (addedToFavourites) {
             true ->
                 viewModelScope.launch {
-                    repository.database.favouritesDao().addFavourite(movieDetails)
-
+                    repository.addFavourite(movieDetails)
                 }
 
             false ->
                 viewModelScope.launch {
-                    repository.database.favouritesDao().removeFromFavourites(movieDetails.id)
+                    repository.removeFromFavourites(movieDetails.id)
                 }
         }
-
 
 //        return !addedToFavourites
     }
